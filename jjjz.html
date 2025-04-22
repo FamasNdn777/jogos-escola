@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz de Inglês</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #question {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 150px);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      background-color: #111;
+      border: 2px solid white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: white;
+    }
+
+    .option:hover {
+      background-color: blue;
+      color: white;
+    }
+
+    .scoreboard {
+      display: flex;
+      gap: 20px;
+      font-size: 16px;
+    }
+
+    .score {
+      background-color: #111;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1px solid white;
+    }
+
+    #final-message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>QUIZ DE INGLÊS</h1>
+  <div id="question">Carregando pergunta...</div>
+  <div class="options" id="options"></div>
+  <div class="scoreboard">
+    <div class="score">Acertos: <span id="correct">0</span></div>
+    <div class="score">Erros: <span id="wrong">0</span></div>
+  </div>
+  <div id="final-message"></div>
+
+  <script>
+    const perguntas = [
+      {
+        pergunta: "O que significa a palavra 'apple'?",
+        opcoes: ["Maçã", "Banana", "Laranja", "Uva"],
+        correta: "Maçã"
+      },
+      {
+        pergunta: "Como se diz 'cachorro' em inglês?",
+        opcoes: ["Dog", "Cat", "Bird", "Cow"],
+        correta: "Dog"
+      },
+      {
+        pergunta: "Qual é o plural de 'child' em inglês?",
+        opcoes: ["Childs", "Childes", "Children", "Childer"],
+        correta: "Children"
+      },
+      {
+        pergunta: "O que significa 'good morning'?",
+        opcoes: ["Boa noite", "Bom dia", "Boa tarde", "Até logo"],
+        correta: "Bom dia"
+      },
+      {
+        pergunta: "O que significa 'blue'?",
+        opcoes: ["Azul", "Verde", "Vermelho", "Amarelo"],
+        correta: "Azul"
+      },
+      {
+        pergunta: "Como se fala 'livro' em inglês?",
+        opcoes: ["Book", "Pen", "Notebook", "Pencil"],
+        correta: "Book"
+      }
+    ];
+
+    let perguntasRestantes = [...perguntas];
+    let acertos = 0;
+    let erros = 0;
+
+    // Embaralha as perguntas
+    perguntasRestantes.sort(() => Math.random() - 0.5);
+
+    function carregarPergunta() {
+      if (perguntasRestantes.length === 0) {
+        document.getElementById("question").innerText = "Fim do quiz!";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("final-message").innerText = `Você acertou ${acertos} e errou ${erros}.`;
+        return;
+      }
+
+      const perguntaAtual = perguntasRestantes.shift();
+      document.getElementById("question").innerText = perguntaAtual.pergunta;
+      const opcoesDiv = document.getElementById("options");
+      opcoesDiv.innerHTML = "";
+
+      perguntaAtual.opcoes.forEach(opcao => {
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.innerText = opcao;
+        btn.onclick = () => {
+          if (opcao === perguntaAtual.correta) {
+            acertos++;
+            document.getElementById("correct").innerText = acertos;
+          } else {
+            erros++;
+            document.getElementById("wrong").innerText = erros;
+          }
+          carregarPergunta();
+        };
+        opcoesDiv.appendChild(btn);
+      });
+    }
+
+    carregarPergunta();
+  </script>
+</body>
+</html>
